@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Mishtu's Magical Birthday Surprise</title>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Dancing+Script&family=Great+Vibes&family=Poppins:wght@300;500&display=swap"
+    rel="stylesheet"
+  />
+  <style>
+    /* Reset */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(135deg, #3b0a45, #1a1f4a);
+      color: #f5e6c4;
+      overflow-x: hidden;
+      min-height: 100vh;
+      position: relative;
+      user-select: none;
+    }
+
+    /* Sparkles animation background */
+    body::before {
+      content: '';
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background:
+        radial-gradient(2px 2px at 10% 20%, #ffd70088, transparent),
+        radial-gradient(3px 3px at 40% 30%, #ffd700cc, transparent),
+        radial-gradient(1.5px 1.5px at 60% 70%, #ffea0044, transparent),
+        radial-gradient(2px 2px at 80% 80%, #ffd700aa, transparent);
+      background-repeat: repeat;
+      animation: twinkle 6s linear infinite;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    @keyframes twinkle {
+      0%, 100% { background-position: 0 0, 0 0, 0 0, 0 0; }
+      50% { background-position: 100px 100px, 80px 80px, 60px 60px, 40px 40px; }
+    }
+
+    .page {
+      display: none;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      padding: 20px;
+      text-align: center;
+      position: relative;
+      z-index: 1;
+      animation: fadeIn 1s ease forwards;
+    }
+
+    .page.active {
+      display: flex;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Headings */
+    h1, h2 {
+      font-family: 'Great Vibes', cursive;
+      color: #ffda79;
+      text-shadow:
+        0 0 8px #ffda79,
+        0 0 15px #ffb700,
+        0 0 25px #ff9f00;
+      margin-bottom: 25px;
+    }
+    h1 {
+      font-size: 4rem;
+    }
+    h2 {
+      font-size: 3rem;
+    }
+
+    p, .memory-caption, .letter-box {
+      font-family: 'Poppins', sans-serif;
+      font-weight: 500;
+      color: #f5e6c4;
+      max-width: 900px;
+      line-height: 1.6;
+      margin-bottom: 20px;
+      text-shadow: 0 0 5px #aa7a00cc;
+    }
+
+    button {
+      font-family: 'Dancing Script', cursive;
+      font-size: 1.4rem;
+      background: linear-gradient(45deg, #f6d365, #fda085);
+      border: none;
+      padding: 15px 40px;
+      border-radius: 40px;
+      color: #4a2c00;
+      box-shadow:
+        0 0 10px #fda085,
+        inset 0 -2px 5px #b86800;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      user-select: none;
+    }
+    button:hover {
+      background: linear-gradient(45deg, #fda085, #f6d365);
+      box-shadow:
+        0 0 15px #ffbb00,
+        inset 0 -3px 6px #ca7e00;
+      color: #4a2c00;
+    }
+
+    /* Gift box */
+    #giftBox {
+      width: 180px;
+      height: 180px;
+      background: url('g1.png') center/contain no-repeat;
+      animation: rotateGift 3.5s linear infinite;
+      cursor: pointer;
+      margin-bottom: 20px;
+      filter: drop-shadow(0 0 6px #ffdb58);
+      border-radius: 15px;
+      box-shadow: 0 0 12px #fbcf36;
+      transition: transform 0.3s ease;
+    }
+    #giftBox:hover {
+      transform: scale(1.1) rotate(10deg);
+      filter: drop-shadow(0 0 10px #ffdb58);
+    }
+
+    @keyframes rotateGift {
+      0% { transform: rotate(0deg);}
+      100% { transform: rotate(360deg);}
+    }
+
+    #hbText {
+      font-size: 3rem;
+      font-weight: 900;
+      color: #ffc107;
+      animation: bounce 0.7s ease-in-out infinite alternate;
+      margin-top: 15px;
+      text-shadow:
+        0 0 8px #ffc107,
+        0 0 15px #ffb300;
+      display: none;
+    }
+
+    @keyframes bounce {
+      from { transform: translateY(0);}
+      to { transform: translateY(-25px);}
+    }
+
+    /* Memory grid */
+    .memory-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 25px;
+      max-width: 1200px;
+      width: 100%;
+      padding: 10px;
+    }
+    .memory-card {
+      background: rgba(255 255 255 / 0.12);
+      border-radius: 25px;
+      overflow: hidden;
+      box-shadow: 0 0 20px 4px #ffb70044;
+      backdrop-filter: blur(8px);
+      transition: transform 0.35s ease, box-shadow 0.35s ease;
+      cursor: default;
+    }
+    .memory-card:hover {
+      transform: translateY(-12px);
+      box-shadow: 0 0 30px 6px #ffc107cc;
+    }
+    .memory-card img {
+      width: 100%;
+      height: 240px;
+      object-fit: cover;
+      border-bottom: 2px solid #ffb700aa;
+    }
+    .memory-caption {
+      padding: 15px 20px;
+      font-weight: 600;
+      font-size: 1.1rem;
+      color: #fff3b0;
+      text-shadow: 0 0 4px #6a4300;
+      user-select: text;
+    }
+
+    /* Letter box style */
+    .letter-box {
+      background: rgba(255 255 255 / 0.15);
+      border-radius: 20px;
+      padding: 35px 45px;
+      max-width: 850px;
+      font-size: 1.25rem;
+      font-style: italic;
+      box-shadow: 0 0 25px 5px #ffb70055;
+      user-select: text;
+    }
+
+    /* Audio and Song Player */
+    .audio-player {
+      margin-top: 30px;
+    }
+    audio {
+      outline: none;
+      width: 320px;
+      border-radius: 15px;
+      box-shadow: 0 0 20px #ffb700aa;
+      background: #1a1f4a;
+    }
+
+    /* Final Thanks page */
+    .end-text {
+      font-size: 3rem;
+      font-weight: 700;
+      color: #ffc107;
+      margin-bottom: 40px;
+      text-shadow: 0 0 12px #ffb300;
+    }
+    .love-text {
+      font-family: 'Dancing Script', cursive;
+      font-size: 2.7rem;
+      color: #ff6f91;
+      text-shadow:
+        0 0 15px #ff4e6c,
+        0 0 30px #ff2a4b;
+      margin-bottom: 60px;
+    }
+
+    /* Navigation buttons */
+    .nav-buttons {
+      margin-top: 30px;
+      display: flex;
+      gap: 30px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+    .nav-buttons button {
+      background: linear-gradient(45deg, #f6d365, #fda085);
+      box-shadow: 0 0 15px #ffbb00;
+      color: #4a2c00;
+      min-width: 140px;
+    }
+    .nav-buttons button:hover {
+      background: linear-gradient(45deg, #fda085, #f6d365);
+      box-shadow: 0 0 22px #ffbb00;
+    }
+
+    /* Responsive */
+    @media (max-width: 600px) {
+      h1 { font-size: 2.8rem; }
+      h2 { font-size: 2.2rem; }
+      #giftBox { width: 140px; height: 140px; }
+      .memory-card img { height: 180px; }
+      audio { width: 90vw; }
+    }
+  </style>
+</head>
+<body>
+  <!-- Pages container -->
+   
+  <div id="page1" class="page active">
+    
+    <h1>Hlo My Chotudon I Have Something Special For You  </h1>
+    <div id="giftBox" title="Click me for a surprise!"></div>
+    <div id="hbText">✨ Happy Birthday Meri Jaan ! ✨</div>
+    <!-- <button onclick="goNext()">Open Your Magical Surprise</button> -->
+  </div>
+ 
+  <div id="page2" class="page">
+    <h2>From Your Cuteuu, With Love 💖</h2>
+    <p class="letter-box">
+     To Garvita Amritansh Verma,
+
+Kabhi sochi thi ki ek chhoti si mulaqat, ek chhota sa haath thaamna, itni gehri kahani ban jayegi?
+Hamari journey jo February 2022 mein shuru hui thi, aaj tak mere dil mein ussi pyar se zinda hai.
+30 April 2022 ko jab tumse pehli baar mile the, woh pal mere liye kisi sapne se kam nahi tha.
+7 May ko tumhare andar se tumhare mn ki baat bulwana, 12 May ko hamari pehli photo, aur 2 June ka woh din — jab main tumhara haath lekar chocolate lene ke liye gye the — sab kuch itna khaas lagta hai.
+
+Woh pehla hug 16 July ko, aur pehli kiss 7 August — jaise humari mohabbat ne apne pankh phailaye.
+Ladai bhi hui, bhai, gussa bhi tha, par hamare pyaar ne hamesha sab ko jita.
+Mujhe pata hai mera anger tumhe kitna hurt karta tha, par tumne kabhi himmat nahi hari.
+Ab wo ladayi thodi kam ho gayi hai, par tumhari woh pyaar bhari himmat mere dil ko hamesha chhoo jaati hai.
+
+Aaj jab hum door hain, jab tum board exams ke baad thodi door ho, ham tumhe zyada miss karte h.
+Har pal tumhari yaadein mere saath h, har pal tumhari muskaan mere dil ko sukoon deti h.
+Tum meri zindagi mein ek roshni ho, jo kabhi bujh nahi sakti.
+ham tumse vaada karte h ki har mushkil mein tumhara saath denge, har khushi mein tumhara haath thamenge.
+Meri Mishtu, meri jaan, mera sab kuch — tum meri zindagi ka sabse khoobsurat hissa ho.
+
+Aaj tumhara birthday hai, aur main dua karta hoon ki tumhari zindagi mein hamesha khushiyan hi khushiyan ho.
+Tumhari har ek muskaan meri duniya ko roshan karti rahe.
+Happy Birthday meri pyaari si chotudon — meri roshni, meri zindagi, meri mohabbat.
+
+Hamesha tumhara,
+Amritansh{The cuteu Boy}
+    </p>
+    <div class="nav-buttons">
+      <button onclick="goPrev()">Back</button>
+      <button onclick="goNext()">Next</button>
+    </div>
+  </div>
+
+  <div id="page3" class="page">
+    <h2>Memories & Moments</h2>
+    <div class="memory-grid">
+      <div class="memory-card">
+        <img src="f.jpg" alt="Memory 1"/>
+        <p class="memory-caption">Our first chat</p>
+      </div>
+      <div class="memory-card">
+        <img src="p.jpg" alt="Memory 2"/>
+        <p class="memory-caption">Our Proposal</p>
+      </div>
+      <div class="memory-card">
+        <img src="h.jpg" alt="Memory 3"/>
+        <p class="memory-caption">Our Hug </p>
+      </div>
+      <div class="memory-card">
+        <img src="k.jpg" alt="Memory 4"/>
+        <p class="memory-caption">Our Kiss</p>
+      </div>
+    </div>
+    <div class="nav-buttons">
+      <button onclick="goPrev()">Back</button>
+      <button onclick="goNext()">Next</button>
+    </div>
+  </div>
+
+  <div id="page4" class="page">
+    <h2>Meri jaan ka Magic</h2>
+    <p class="letter-box">"Expecto Patronum" nahi,
+ab sirf ek naam ka jaadu chahiye—
+Chotulal ka
+Kyunki usi mein basa hai mera har charm,
+mera har protector, mera har warm.
+Dementor aaye ya andhera chhaye,
+tera pyaar mera Patronus ban jaaye.
+Tere bina na koi spell kaam kare,
+na koi potion bachaaye—
+bas tera ek 'jaan' kehna,
+aur duniya roshan ho jaaye. ✨💫</p>
+    <div class="nav-buttons">
+      <button onclick="goPrev()">Back</button>
+      <button onclick="goNext()">Next</button>
+    </div>
+  </div>
+
+  <div id="page5" class="page">
+    <h2>Sweet Chocolates & Dark Magic</h2>
+    <p>OOOOOOOooooo... Meri Chotulal tumhe chocolate bhut psnd h na lo tumhare liye dark chocolate laaye h ab milne toh aa nhi skte ham varna asliyat me dete tumhe!!🤗🍫🍫 </p>
+    <img src="dc.png" alt="Dark Chocolate" style="max-width:300px; border-radius:15px; box-shadow:0 0 20px #aa6f39;">
+    <div class="nav-buttons">
+      <button onclick="goPrev()">Back</button>
+      <button onclick="goNext()">Next</button>
+    </div>
+  </div>
+
+  <div id="page6" class="page">
+    <h2>Poetry for Meri Rasmalai</h2>
+    <p class="letter-box">
+     Tere naam se chalti hai dhadkanein meri,
+Garvita Amritansh Verma — pyaar ki kahani teri.
+
+Na Harry ka wand, na Dumbledore ka charm,
+Tere ek hug se ho jaata hai dil calm.
+
+Teri muskaan hai jaise butterbeer ka nasha,
+Aur aankhon mein hai mera har ek tamasha.
+
+Tu jaise Ron ke jokes, ya Hermione ki shine,
+Par sabse khaas — tu sirf meri Valentine.
+
+Dance kare duniya, mujhe toh tu hi dikhai de,
+Shiro bhi samjhe — tu hi meri zindagi ke spell me hai bandhe.
+
+Tu ho toh sab kuch hai complete,
+Meri jaan, tu hi meri heartbeat
+    </p>
+    <div class="nav-buttons">
+      <button onclick="goPrev()">Back</button>
+      <button onclick="goNext()">Next</button>
+    </div>
+  </div>
+
+
+
+  <div id="page7" class="page">
+    <h2>Magical Journey Ahead</h2>
+    <p class="letter-box">
+      I Amritansh Verma Your Husband Wish u a very good luck for your future a head tumhe har vo chiz mile jo tumhe chahiye aur har vo chiz tumhare raste se hat jaaye jo tumhe usse paane se roke tumhe har chiz ek magic ke trh mil jaaye jaise vo Harry Portter krta tha u ka fav aur albays hippi rho tum 
+      ham toh ye bhi manjoor h jaan agr ham kbhi tumhare lfe ke sucess ke bich me aate h toh side kr dena tum hame bs tum hipi rho yahi chahte h meri pyaari si che jaisi chotulal......😍♥💝🥰💟❤💟
+    </p>
+    <div class="nav-buttons">
+      <button onclick="goPrev()">Back</button>
+      <button onclick="goNext()">Next</button>
+    </div>
+
+
+
+  </div>
+
+
+  <div id="page8" class="page">
+
+    <h2>Your Wish</h2>
+    
+    <p class="letter-box">
+      Jaan aaj tumhare bday wale din bhagwaan se jo chahiye vo wish krke ek naye saal ka shuruaat kro aur ham keh rhe na  tumhe sb kuch milega dont worry 🥰✨🎉🎊
+    </p>
+    <div class="nav-buttons">
+
+      <button onclick="goPrev()">Back</button>
+      <button onclick="goNext()">Next</button>
+    </div>
+
+  </div>
+
+
+
+  <div id="page9" class="page">
+    <h2>Ham tumhare liye ek song gaye h chotulal Sunna chahogi tumm ????</h2>
+    <p>Here’s a little melody to make your day even more Sweet.</p>
+    <div class="audio-player">
+      <audio controls>
+        <source src="so.mp3" type="audio/mpeg" />
+        Your browser does not support the audio element.
+      </audio>
+    </div>
+    <div class="nav-buttons">
+      <button onclick="goPrev()">Back</button>
+      <button onclick="goNext()">Next</button>
+    </div>
+  </div>
+
+  <div id="page10" class="page">
+    <h1>Thank You, Mishtu(meri jaan meri 5g ) Mere Life Me rehne ke liye 💖</h1>
+    <p class="love-text">Tumhare bina sab suna lagta hai. Tum hi ho jisse dekh ke gussa bhi pighal jaata hai, aur khushi bhi double ho jaati hai. Jitni baar tumhe 'Jaan' kehke bulate h, utni baar dil aur gehra pyaar mehsoos karta hai. Titu-Shiro-Bebo-Gora ki mummy, meri zindagi ki mishti si mithaas... tum hi toh ho mera asli 'Expecto Patronum'."</p>
+    <button onclick="goPrev()">Back</button>
+  </div>
+
+  <script>
+    alert("click the gift button to get your surprise!!!!!!");
+    const totalPages = 10;
+    let currentPage = 1;
+
+    const pages = [];
+    for (let i = 1; i <= totalPages; i++) {
+      pages.push(document.getElementById(`page${i}`));
+    }
+
+    function showPage(pageNum) {
+      pages.forEach((page, i) => {
+        if (i + 1 === pageNum) page.classList.add('active');
+        else page.classList.remove('active');
+      });
+    }
+
+    function goNext() {
+      if (currentPage < totalPages) {
+        currentPage++;
+        showPage(currentPage);
+      }
+    }
+
+    function goPrev() {
+      if (currentPage > 1) {
+        currentPage--;
+        showPage(currentPage);
+      }
+    }
+
+
+
+    // Gift box sparkle & reveal
+    const giftBox = document.getElementById('giftBox');
+    const hbText = document.getElementById('hbText');
+    giftBox.addEventListener('click', () => {
+      hbText.style.display = 'block';
+      setTimeout(() => {
+        goNext();
+      }, 1500);
+    });
+  </script>
+  
+</body>
+</html>
